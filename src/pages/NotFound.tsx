@@ -1,9 +1,9 @@
-import { memo } from 'react';
-import styled from 'styled-components';
+import { Header } from '@components/Header/Header';
 import { motion } from 'framer-motion';
 import { Home } from 'lucide-react';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { Header } from '@components/Header/Header';
+import styled from 'styled-components';
 
 const PageWrapper = styled.div`
   min-height: 100vh;
@@ -78,25 +78,6 @@ const PrimaryButton = styled(Link)`
   }
 `;
 
-const SecondaryButton = styled(Link)`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1rem 2rem;
-  background-color: transparent;
-  color: ${({ theme }) => theme.colors.foreground};
-  border: 2px solid ${({ theme }) => theme.colors.border};
-  border-radius: 0.5rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all ${({ theme }) => theme.transitions.fast};
-
-  &:hover {
-    border-color: ${({ theme }) => theme.colors.foreground};
-    transform: translateY(-2px);
-  }
-`;
-
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -131,7 +112,7 @@ const NotFound = memo(() => {
           animate="visible"
         >
           <ErrorCode variants={itemVariants}>404</ErrorCode>
-          
+
           <Title variants={itemVariants}>
             Page Not Found
           </Title>

@@ -1,6 +1,6 @@
 import { contentData } from '@data/content';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Camera, ExternalLink, Gamepad2 } from 'lucide-react';
+import { Camera, ExternalLink, Gamepad2, Zap } from 'lucide-react';
 import { memo, useState } from 'react';
 import styled from 'styled-components';
 
@@ -35,11 +35,17 @@ const TabsContainer = styled.div`
   gap: 1rem;
   justify-content: center;
   margin-bottom: 3rem;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+  }
 `;
 
 const Tab = styled.button<{ $active: boolean }>`
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 1rem 2rem;
   background-color: ${({ theme, $active }) =>
@@ -52,9 +58,27 @@ const Tab = styled.button<{ $active: boolean }>`
   font-size: 1rem;
   cursor: pointer;
   transition: all ${({ theme }) => theme.transitions.fast};
+  text-align: center;
+  white-space: nowrap;
 
   &:hover {
     border-color: ${({ theme }) => theme.colors.foreground};
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    gap: 0.375rem;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.625rem 1rem;
+    font-size: 0.8125rem;
   }
 `;
 
@@ -197,6 +221,70 @@ const GameTitle = styled.h3`
   color: ${({ theme }) => theme.colors.foreground};
 `;
 
+// Speed Skating Styles
+const SpeedSkatingContainer = styled(motion.div)`
+  max-width: 900px;
+  margin: 0 auto;
+`;
+
+const SpeedSkatingCard = styled(motion.div)`
+  background-color: ${({ theme }) => theme.colors.card};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: ${({ theme }) => theme.shadows.lg};
+
+  @media (max-width: 768px) {
+    border-radius: 0.75rem;
+  }
+`;
+
+const SpeedSkatingImage = styled.img`
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+
+  @media (max-width: 768px) {
+    height: 250px;
+  }
+`;
+
+const SpeedSkatingContent = styled.div`
+  padding: 2.5rem;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
+`;
+
+const SpeedSkatingTitle = styled.h2`
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: ${({ theme }) => theme.colors.foreground};
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+`;
+
+const SpeedSkatingParagraph = styled.p`
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: ${({ theme }) => theme.colors.secondary};
+  margin-bottom: 1.5rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+`;
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -216,19 +304,16 @@ const itemVariants = {
   },
 };
 
-type HobbyTab = 'photography' | 'games';
+type HobbyTab = 'photography' | 'games' | 'speedSkating';
 
 // Helper to find game icon with fallback extensions
 const getGameIconPath = (iconName: string): string => {
   // If icon already has extension, use it
   if (iconName.match(/\.(svg|png|jpg|jpeg)$/i)) {
     // Check if it's in icons folder first
-    const iconPath = `/src/assets/icons/${iconName}`;
-    // Fallback to images folder
-    const imagePath = `/src/assets/images/${iconName}`;
-    return iconPath; // Browser will try to load, fallback handled by onerror
+    return `/src/assets/icons/${iconName}`; // Browser will try to load, fallback handled by onerror
   }
-  
+
   // Try svg first, then png, then jpg in icons folder
   return `/src/assets/icons/${iconName}.svg`;
 };
@@ -246,20 +331,21 @@ const getGameIconFallback = (iconName: string): string[] => {
 };
 
 const Hobbies = memo(() => {
-  const { photography, games } = contentData;
+  const { photography, games, speedSkating } = contentData;
 
   // Check what content exists
   const hasPhotography = photography && photography.length > 0;
   const hasGames = games && games.length > 0;
-
-  // If neither exists, don't render
-  if (!hasPhotography && !hasGames) {
-    return null;
-  }
+  const hasSpeedSkating = speedSkating && speedSkating.title;
 
   // Set default tab based on what exists
-  const defaultTab = hasPhotography ? 'photography' : 'games';
+  const defaultTab = hasSpeedSkating ? 'speedSkating' : hasPhotography ? 'photography' : 'games';
   const [activeTab, setActiveTab] = useState<HobbyTab>(defaultTab);
+
+  // If none exists, don't render
+  if (!hasPhotography && !hasGames && !hasSpeedSkating) {
+    return null;
+  }
 
   return (
     <HobbiesContainer>
@@ -276,10 +362,19 @@ const Hobbies = memo(() => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          When I'm not coding, I enjoy capturing moments through photography and exploring virtual worlds
+          When I'm not coding, I enjoy speed skating, capturing moments through photography, and exploring virtual worlds
         </Subtitle>
 
         <TabsContainer>
+          {hasSpeedSkating && (
+            <Tab
+              $active={activeTab === 'speedSkating'}
+              onClick={() => setActiveTab('speedSkating')}
+            >
+              <Zap size={20} />
+              Speed Skating
+            </Tab>
+          )}
           {hasPhotography && (
             <Tab
               $active={activeTab === 'photography'}
@@ -302,6 +397,31 @@ const Hobbies = memo(() => {
       </Header>
 
       <AnimatePresence mode="wait">
+        {activeTab === 'speedSkating' && hasSpeedSkating && (
+          <SpeedSkatingContainer
+            key="speedSkating"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <SpeedSkatingCard>
+              <SpeedSkatingImage
+                src={`/src/assets/images/${speedSkating.image.path}`}
+                alt={speedSkating.image.alt}
+                loading="lazy"
+              />
+              <SpeedSkatingContent>
+                <SpeedSkatingTitle>{speedSkating.title}</SpeedSkatingTitle>
+                {speedSkating.description.map((paragraph, index) => (
+                  <SpeedSkatingParagraph key={index}>
+                    {paragraph}
+                  </SpeedSkatingParagraph>
+                ))}
+              </SpeedSkatingContent>
+            </SpeedSkatingCard>
+          </SpeedSkatingContainer>
+        )}
         {activeTab === 'photography' && hasPhotography && (
           <PhotoGrid
             key="photography"
@@ -354,7 +474,7 @@ const Hobbies = memo(() => {
                       onError={(e) => {
                         const img = e.target as HTMLImageElement;
                         const currentSrc = img.src;
-                        const currentIndex = fallbackPaths.findIndex(path => 
+                        const currentIndex = fallbackPaths.findIndex(path =>
                           currentSrc.includes(path.replace('/src/assets/', ''))
                         );
                         if (currentIndex < fallbackPaths.length - 1) {

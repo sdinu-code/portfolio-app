@@ -61,7 +61,7 @@ const ExperienceCard = styled(motion.div)<{ $isCurrent?: boolean }>`
   &::before {
     content: '';
     position: absolute;
-    left: -2.9375rem;
+    left: -3.0375rem;
     top: 0.5rem;
     width: 12px;
     height: 12px;
@@ -79,7 +79,7 @@ const ExperienceCard = styled(motion.div)<{ $isCurrent?: boolean }>`
   &::after {
     content: '';
     position: absolute;
-    left: -3.0625rem;
+    left: -3.1625rem;
     top: 0.375rem;
     width: 16px;
     height: 16px;

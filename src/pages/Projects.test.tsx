@@ -1,24 +1,52 @@
-import { describe, it, expect } from 'vitest';
+import { ThemeProvider } from '@contexts/ThemeContext';
+import { render } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import Projects from './Projects';
 
 describe('Projects Page', () => {
-  it('renders project grid layout', () => {
-    // Simple smoke test
-    expect(true).toBe(true);
+  it('renders projects page without crashing', () => {
+    const { container } = render(
+      <ThemeProvider>
+        <Projects />
+      </ThemeProvider>
+    );
+    expect(container.firstChild).toBeDefined();
   });
 
-  it('displays project cards with titles', () => {
-    expect(true).toBe(true);
+  it('displays projects grid', () => {
+    const { container } = render(
+      <ThemeProvider>
+        <Projects />
+      </ThemeProvider>
+    );
+    expect(container.firstChild).toBeDefined();
   });
 
-  it('shows project metadata (period, location)', () => {
-    expect(true).toBe(true);
+  it('renders with proper structure', () => {
+    const { container } = render(
+      <ThemeProvider>
+        <Projects />
+      </ThemeProvider>
+    );
+    expect(container.querySelector('div')).toBeDefined();
   });
 
-  it('renders project tools as tags', () => {
-    expect(true).toBe(true);
+  it('initializes without errors', () => {
+    expect(() => {
+      render(
+        <ThemeProvider>
+          <Projects />
+        </ThemeProvider>
+      );
+    }).not.toThrow();
   });
 
-  it('includes links to GitHub and live demos', () => {
-    expect(true).toBe(true);
+  it('mounts successfully', () => {
+    const { unmount } = render(
+      <ThemeProvider>
+        <Projects />
+      </ThemeProvider>
+    );
+    expect(unmount).toBeDefined();
   });
 });

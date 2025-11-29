@@ -5,6 +5,7 @@ import useDimensions from '@hooks/useDimensions';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, Moon, Sun, X } from 'lucide-react';
 import { memo, useCallback, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
 const GlobalFonts = createGlobalStyle`
@@ -197,6 +198,7 @@ export const Header = memo(({ sections = [], onNavigate }: HeaderProps = {}) => 
   const [isMobile] = useDimensions();
   const { mode, toggleTheme } = useTheme();
   const navRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate()
 
   const openMenu = useCallback(() => setIsOpen(true), []);
   const closeMenu = useCallback(() => setIsOpen(false), []);
@@ -206,7 +208,8 @@ export const Header = memo(({ sections = [], onNavigate }: HeaderProps = {}) => 
   const handleLogoClick = () => {
     const homeSection = document.querySelector('[data-section="home"]');
     if (homeSection) {
-      homeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      navigate('/');
+      onNavigate?.('home');
     }
   };
 

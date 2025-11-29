@@ -40,6 +40,15 @@ export interface Photography {
   altUrl?: string;
 }
 
+export interface SpeedSkating {
+  title: string;
+  description: string[];
+  image: {
+    path: string;
+    alt: string;
+  };
+}
+
 export interface Project {
   title: string;
   city: string;
@@ -90,12 +99,34 @@ export interface Experience {
   responsibilities: string[];
 }
 
+export interface Codewars {
+  username: string;
+  enabled: boolean;
+}
+
+export interface SectionConfig {
+  enabled: boolean;
+  order: number;
+  useSkeleton?: boolean;
+}
+
+export interface SectionsConfig {
+  projects: SectionConfig;
+  certifications: SectionConfig;
+  skills: SectionConfig;
+  experience: SectionConfig;
+  hobbies: SectionConfig;
+  contact: SectionConfig;
+}
+
 export interface ContentData {
+  sections: SectionsConfig;
   certifications: Certification[];
   contact: Contact;
   education: Education[];
   games: Game[];
   photography: Photography[];
+  speedSkating: SpeedSkating;
   introduction: string[];
   footer: string;
   homepage: { title: string };
@@ -104,4 +135,5 @@ export interface ContentData {
   social: SocialMediaLink[];
   technologies: Technologies;
   experience: Experience[];
+  codewars: Codewars;
 }

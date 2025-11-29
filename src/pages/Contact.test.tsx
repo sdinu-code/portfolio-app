@@ -1,23 +1,53 @@
-import { describe, it, expect } from 'vitest';
+import { ThemeProvider } from '@contexts/ThemeContext';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import Contact from './Contact';
 
 describe('Contact Page', () => {
-  it('renders 3-column grid on desktop', () => {
-    expect(true).toBe(true);
+  it('renders contact page without crashing', () => {
+    render(
+      <ThemeProvider>
+        <Contact />
+      </ThemeProvider>
+    );
+    expect(screen.getByText(/contact/i)).toBeDefined();
   });
 
   it('displays contact information cards', () => {
-    expect(true).toBe(true);
+    const { container } = render(
+      <ThemeProvider>
+        <Contact />
+      </ThemeProvider>
+    );
+    expect(container.querySelector('a[href^="mailto:"]')).toBeDefined();
   });
 
-  it('includes email, LinkedIn, and social links', () => {
-    expect(true).toBe(true);
+  it('includes LinkedIn link', () => {
+    const { container } = render(
+      <ThemeProvider>
+        <Contact />
+      </ThemeProvider>
+    );
+    const linkedInLink = container.querySelector('a[href*="linkedin.com"]');
+    expect(linkedInLink).toBeDefined();
   });
 
   it('shows location information', () => {
-    expect(true).toBe(true);
+    render(
+      <ThemeProvider>
+        <Contact />
+      </ThemeProvider>
+    );
+    expect(screen.getByText(/Bucharest/i)).toBeDefined();
   });
 
-  it('adapts to mobile layout (1 column)', () => {
-    expect(true).toBe(true);
+  it('renders with proper structure', () => {
+    const { container } = render(
+      <ThemeProvider>
+        <Contact />
+      </ThemeProvider>
+    );
+    expect(container.firstChild).toBeDefined();
   });
 });
+

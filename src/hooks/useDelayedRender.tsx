@@ -1,5 +1,5 @@
-import Loader from '@components/Loader/Loader';
-import { useEffect, useState } from 'react';
+import { Loader } from '@components/Loader/Loader';
+import { JSX, useEffect, useState } from 'react';
 
 const useDelayedRender = (Component: JSX.Element, ms: number = 300) => {
   const [isPageRendered, setIsPageRendered] = useState(false);
@@ -14,7 +14,7 @@ const useDelayedRender = (Component: JSX.Element, ms: number = 300) => {
     };
   }, [ms]);
 
-  return isPageRendered ? Component : <Loader duration={ms} />;
+  return isPageRendered ? Component : <Loader />;
 };
 
 export default useDelayedRender;

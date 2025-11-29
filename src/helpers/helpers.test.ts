@@ -1,12 +1,10 @@
-import { describe, it, expect } from 'vitest';
 
-// Helper function tests
 describe('Helper Functions', () => {
   describe('Array helpers', () => {
     it('creates an array from a range', () => {
-      const range = (start: number, end: number) => 
+      const range = (start: number, end: number) =>
         Array.from({ length: end - start + 1 }, (_, i) => start + i);
-      
+
       const result = range(1, 5);
       expect(result).toEqual([1, 2, 3, 4, 5]);
     });
@@ -25,9 +23,9 @@ describe('Helper Functions', () => {
 
   describe('String helpers', () => {
     it('capitalizes first letter', () => {
-      const capitalize = (str: string) => 
+      const capitalize = (str: string) =>
         str.charAt(0).toUpperCase() + str.slice(1);
-      
+
       expect(capitalize('hello')).toBe('Hello');
       expect(capitalize('world')).toBe('World');
     });
@@ -35,7 +33,7 @@ describe('Helper Functions', () => {
     it('truncates long strings', () => {
       const truncate = (str: string, length: number) =>
         str.length > length ? str.substring(0, length) + '...' : str;
-      
+
       expect(truncate('Hello world', 5)).toBe('Hello...');
       expect(truncate('Hi', 5)).toBe('Hi');
     });
@@ -43,9 +41,9 @@ describe('Helper Functions', () => {
 
   describe('Object helpers', () => {
     it('checks if object is empty', () => {
-      const isEmpty = (obj: Record<string, any>) => 
+      const isEmpty = (obj: Record<string, any>) =>
         Object.keys(obj).length === 0;
-      
+
       expect(isEmpty({})).toBe(true);
       expect(isEmpty({ key: 'value' })).toBe(false);
     });

@@ -2,7 +2,7 @@ import ErrorBoundary from '@components/ErrorBoundary/ErrorBoundary';
 import { Footer } from '@components/Footer/Footer';
 import { Loader } from '@components/Loader/Loader';
 import { Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 
 // Lazy load pages
@@ -62,6 +62,12 @@ export const App = () => {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/home" element={<Navigate to="/" replace />} />
+                <Route path="/projects" element={<Navigate to="/#projects" replace />} />
+                <Route path="/certifications" element={<Navigate to="/#certifications" replace />} />
+                <Route path="/skills" element={<Navigate to="/#skills" replace />} />
+                <Route path="/experience" element={<Navigate to="/#experience" replace />} />
+                <Route path="/hobbies" element={<Navigate to="/#hobbies" replace />} />
+                <Route path="/contact" element={<Navigate to="/#contact" replace />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>

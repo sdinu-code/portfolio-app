@@ -1,6 +1,14 @@
 import type { ContentData } from './types';
 
 export const contentData: ContentData = {
+  sections: {
+    projects: { enabled: true, order: 2, useSkeleton: true },
+    certifications: { enabled: true, order: 4, useSkeleton: true },
+    skills: { enabled: true, order: 3, useSkeleton: true },
+    experience: { enabled: true, order: 1, useSkeleton: true },
+    hobbies: { enabled: true, order: 5, useSkeleton: true },
+    contact: { enabled: true, order: 6, useSkeleton: true },
+  },
   certifications: [
     {
       title: "Microsoft Certified - Azure Fundamentals",
@@ -39,7 +47,7 @@ export const contentData: ContentData = {
       period: "2016 - 2020"
     },
     {
-      position: "Highscool",
+      position: "High School",
       company: "Alexandru Ioan Cuza National College",
       city: "Ploiești",
       period: "2012 - 2016"
@@ -47,7 +55,7 @@ export const contentData: ContentData = {
   ],
   games: [
     { title: "Witcher 3: Wild Hunt", icon: "witcher3.svg" },
-    { title: "Elden Ring", icon: "eldenring.png" },
+    { title: "Elden Ring", icon: "elden_ring.jpg" },
     { title: "Red Dead Redemption 2", icon: "rdr2.svg" },
     { title: "The Last Of Us", icon: "tlou.svg" },
     { title: "Serious Sam", icon: "serious_sam.svg" }
@@ -63,6 +71,17 @@ export const contentData: ContentData = {
     { path: "boat.jpg", width: 300, height: 300, url: "https://unsplash.com/photos/BBYbtPQU9LQ", alt: "Green sailing boat on the beach", type: "generic" },
     { path: "drone.jpg", width: 300, height: 300, url: "https://unsplash.com/photos/2vajkRGV08E", alt: "Picture of DJI Air 2S drone", type: "generic" }
   ],
+  speedSkating: {
+    title: "Speed Skating",
+    description: [
+      "Speed skating was my passion throughout my youth - a sport that might not be mainstream, but it's intense, competitive, and incredibly rewarding. Whether gliding on ice during winter or rolling through summer tracks, it's an all-season thrill that pushes you to your limits.",
+      "Over seven years of racing, I collected awards, forged lifelong friendships, and built the kind of discipline you can only get from pushing yourself on the track. It shaped who I am today."
+    ],
+    image: {
+      path: "tg_mures.jpg",
+      alt: "A kid skating"
+    }
+  },
   introduction: [
     "{{age}}-year-old Senior Software Engineer based in Bucharest, Romania. Building exceptional digital experiences with modern web technologies."
   ],
@@ -70,9 +89,9 @@ export const contentData: ContentData = {
   homepage: { title: "Hello there!" },
   projects: [
     {
-      title: "Resume / presentation website",
+      title: "Resume / Presentation Website",
       city: "Ploiești",
-      description: "A presentation app built for myself containing information like: resume, who am I and what I do, hobbies and more.",
+      description: "A presentation app built for myself containing information like resume, who I am and what I do, hobbies, and more.",
       period: "Aug 2021",
       tools: ["Angular 12", "Angular Router", "Angular Material", "Typescript", "RxJS"],
       website: "#",
@@ -90,37 +109,36 @@ export const contentData: ContentData = {
       video: "react-weather-app"
     },
     {
-      title: "Web Sockets Chat",
+      title: "WebSockets Chat",
       city: "Ploiești",
-      description: "A web chat application built with React on the FE and socket.io running on the BE. Users can connect to the chat room and exchange messages with each other.",
+      description: "A web chat application built with React on the frontend and Socket.io running on the backend. Users can connect to the chat room and exchange messages in real-time.",
       period: "Apr 2021",
       tools: ["React Hooks", "Node.JS", "Websockets", "Socket.io", "Typescript"],
       repo: "https://github.com/SilviuDinu/web-sockets-chat",
       video: "web-sockets-chat"
     },
     {
-      title: "Url Shortener",
+      title: "URL Shortener",
       city: "Ploiești",
-      description: "A web app created with VueJS and Express that enables the users to create short URLs. (similar to bit.ly). The 'Copy to clipboard' feature might not work due to the fact that the SSL certificate expired (https -> http).",
+      description: "A web app created with VueJS and Express that enables users to create short URLs (similar to bit.ly). The 'Copy to clipboard' feature might not work due to the SSL certificate expiration (https -> http).",
       period: "Oct 2020",
       tools: ["VueJS", "NodeJS", "Express", "MongoDB", "REST APIs"],
-      website: "https://slv.lol/",
       repo: "https://github.com/SilviuDinu/url-shortener",
       video: "url-shortener"
     },
     {
-      title: "Disease predictor",
+      title: "Disease Predictor",
       city: "Ploiești",
-      description: "I engineered, fine-tuned, and validated a Neural Network that takes medical symptoms as input and forecasts the most likely corresponding disease. This model serves as the central element of a Flask-based backend server, which I also developed. This server is part of a custom API designed to interact with a frontend, accepting symptom data and returning the predicted disease.",
+      description: "Engineered, fine-tuned, and validated a Neural Network that takes medical symptoms as input and forecasts the most likely corresponding disease. This model serves as the central element of a Flask-based backend server. The server is part of a custom API designed to interact with a frontend, accepting symptom data and returning the predicted disease.",
       period: "Apr 2021 - May 2021",
       tools: ["Python", "PyTorch", "Machine Learning", "Flask", "REST APIs", "Data Science"],
       repo: "https://github.com/SilviuDinu/cercetare_sem2_BE",
       video: "disease-predictor"
     },
     {
-      title: "Smoke detector",
+      title: "Smoke Detector",
       city: "Bucharest",
-      description: "A smoke-detection system built using Python. When a certain value of gas or smoke is detected, I'm getting notified via email with a warning containing the details.",
+      description: "A smoke-detection system built using Python. When a certain threshold of gas or smoke is detected, I receive email notifications with detailed warnings.",
       period: "Nov 2018 – Dec 2018",
       tools: ["Linux", "Raspberry PI", "Python", "Electronics", "SMTP"],
       repo: "https://github.com/SilviuDinu/smoke-detector",
@@ -129,22 +147,22 @@ export const contentData: ContentData = {
   ],
   skills: {
     professional: [
-      { name: "Javascript", level: 90, priority: 1 },
+      { name: "Javascript", level: 95, priority: 1 },
       { name: "Angular", level: 86, priority: 1 },
       { name: "AngularJS", level: 75, priority: 1 },
-      { name: "ReactJS", level: 83, priority: 1 },
+      { name: "ReactJS", level: 95, priority: 1 },
       { name: "VueJS", level: 65, priority: 2 },
       { name: "NodeJS / Express", level: 80, priority: 1 },
       { name: "Socket.io", level: 68, priority: 2 },
-      { name: "HTML / CSS / SCSS / LESS / SASS", level: 90, priority: 2 },
-      { name: "MongoDB, PostgreSQL, MySQL", level: 72, priority: 2 },
+      { name: "HTML / CSS", level: 90, priority: 2 },
+      { name: "MongoDB", level: 72, priority: 2 },
       { name: "REST APIs", level: 82, priority: 2 },
       { name: "Python / PyTorch for ML", level: 72, priority: 2 },
-      { name: "Php", level: 57, priority: 2 }
+      { name: "PHP", level: 57, priority: 2 }
     ],
-    languages: ["English", "Romanian"],
-    developmentTools: ["Git", "Jira", "Azure", "MongoDB Compass", "AWS", "Jenkins", "SonarCloud"],
-    personal: ["Reliable and professional", "Efficient communicator", "Organised", "Punctual", "Team player", "Fast learner", "Motivated", "Curious"]
+    languages: ["English", "Romanian", "Japanese (N5)"],
+    developmentTools: ["Git", "Jira", "Azure", "MongoDB Compass", "AWS", "Jenkins", "SonarQube"],
+    personal: ["Reliable and professional", "Efficient communicator", "Organized", "Punctual", "Team player", "Fast learner", "Motivated", "Curious"]
   },
   social: [
     { name: "github", url: "https://github.com/SilviuDinu", icon: "github-logo" },
@@ -168,7 +186,7 @@ export const contentData: ContentData = {
       { key: "mongo", name: "MongoDB", icon: "mongodb.svg" },
       { key: "postgres", name: "PostgreSQL", icon: "postgresql.svg" },
       { key: "mysql", name: "MySQL", icon: "mysql.svg" },
-      { key: "php", name: "Php", icon: "php.svg" },
+      { key: "php", name: "PHP", icon: "php.svg" },
       { key: "python", name: "Python", icon: "python.svg" },
       { key: "pytorch", name: "Pytorch", icon: "pytorch.svg" },
       { key: "html", name: "HTML", icon: "html.svg" },
@@ -232,5 +250,9 @@ export const contentData: ContentData = {
         "Solving/reporting bugs and debugging (PHP, CSS, JavaScript, MySQL)"
       ]
     }
-  ]
+  ],
+  codewars: {
+    username: "SilviuDinu",
+    enabled: true
+  }
 };

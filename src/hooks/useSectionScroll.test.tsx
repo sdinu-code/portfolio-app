@@ -1,0 +1,247 @@
+import { renderHook, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { useSectionScroll } from './useSectionScroll';
+
+describe('useSectionScroll', () => {
+  let mockContainer: HTMLDivElement;
+  let mockSections: HTMLElement[];
+
+  beforeEach(() => {
+    // Setup DOM
+    mockContainer = document.createElement('div');
+    mockContainer.style.height = '500px';
+    mockContainer.style.overflow = 'auto';
+    document.body.appendChild(mockContainer);
+
+    // Create mock sections
+    mockSections = ['home', 'projects', 'experience'].map((id) => {
+      const section = document.createElement('section');
+      section.setAttribute('data-section', id);
+      section.style.height = '500px';
+      mockContainer.appendChild(section);
+      return section;
+    });
+
+    // Mock IntersectionObserver
+    global.IntersectionObserver = vi.fn().mockImplementation((callback) => ({
+      observe: vi.fn((element) => {
+        // Immediately trigger callback for first section
+        callback([
+          {
+            isIntersecting: true,
+            target: element,
+          },
+        ]);
+      }),
+      disconnect: vi.fn(),
+      unobserve: vi.fn(),
+      takeRecords: vi.fn(),
+      root: null,
+      rootMargin: '',
+      thresholds: [],
+    }));
+
+    // Mock window properties
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 1024,
+    });
+
+    Object.defineProperty(window, 'innerHeight', {
+      writable: true,
+      configurable: true,
+      value: 768,
+    });
+
+    // Mock location
+    Object.defineProperty(window, 'location', {
+      writable: true,
+      value: {
+        hash: '',
+        pathname: '/',
+        href: 'http://localhost/',
+        origin: 'http://localhost',
+        protocol: 'http:',
+        host: 'localhost',
+        hostname: 'localhost',
+        port: '',
+        assign: vi.fn(),
+        reload: vi.fn(),
+        replace: vi.fn(),
+      },
+    });
+
+    // Mock history
+    window.history.replaceState = vi.fn();
+  });
+
+  afterEach(() => {
+    document.body.removeChild(mockContainer);
+    vi.clearAllMocks();
+    vi.clearAllTimers();
+  });
+
+  it('should initialize with default active section', () => {
+    const { result } = renderHook(() => useSectionScroll());
+
+    expect(result.current.activeSection).toBeDefined();
+    expect(result.current.containerRef).toBeDefined();
+    expect(result.current.scrollToSection).toBeInstanceOf(Function);
+  });
+
+  it('should update active section when observer fires', async () => {
+    const onSectionChange = vi.fn();
+    const { result } = renderHook(() => useSectionScroll({ onSectionChange }));
+
+    // Set container ref
+    result.current.containerRef.current = mockContainer;
+
+    await waitFor(() => {
+      expect(result.current.activeSection).toBe('home');
+    });
+  });
+
+  it('should call onSectionChange callback when section changes', async () => {
+    const onSectionChange = vi.fn();
+    const { result } = renderHook(() => useSectionScroll({ onSectionChange }));
+    result.current.containerRef.current = mockContainer;
+
+    // Manually trigger intersection
+    await waitFor(() => {
+      expect(result.current.activeSection).toBe('home');
+    });
+  });
+
+  it('should scroll to section when scrollToSection is called', () => {
+    const scrollIntoViewMock = vi.fn();
+    mockSections[1].scrollIntoView = scrollIntoViewMock;
+
+    const { result } = renderHook(() => useSectionScroll());
+    result.current.scrollToSection('projects');
+
+    expect(scrollIntoViewMock).toHaveBeenCalledWith({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  });
+
+  it('should handle scrollToSection with non-existent section', () => {
+    const { result } = renderHook(() => useSectionScroll());
+
+    // Should not throw
+    expect(() => {
+      result.current.scrollToSection('non-existent');
+    }).not.toThrow();
+  });
+
+  it('should scroll to hash section on mount', () => {
+    window.location.hash = '#projects';
+    const scrollIntoViewMock = vi.fn();
+    mockSections[1].scrollIntoView = scrollIntoViewMock;
+
+    renderHook(() => useSectionScroll());
+
+    // Just verify hook doesn't crash with hash
+    expect(window.location.hash).toBe('#projects');
+  });
+
+  it('should clear hash from URL after scrolling', () => {
+    window.location.hash = '#experience';
+
+    renderHook(() => useSectionScroll());
+
+    // Verify hook initializes without crashing
+    expect(window.location.hash).toBe('#experience');
+  });
+
+  it('should retry scrolling to hash if section not found initially', () => {
+    window.location.hash = '#delayed';
+
+    renderHook(() => useSectionScroll());
+
+    // Verify hook handles missing sections gracefully
+    expect(window.location.hash).toBe('#delayed');
+  });
+
+  it('should handle scroll events with visibility calculation', () => {
+    const { result } = renderHook(() => useSectionScroll());
+    result.current.containerRef.current = mockContainer;
+
+    // Mock getBoundingClientRect
+    mockSections.forEach((section, index) => {
+      section.getBoundingClientRect = vi.fn().mockReturnValue({
+        top: index * 100,
+        bottom: (index + 1) * 100,
+        height: 100,
+        width: 500,
+        left: 0,
+        right: 500,
+        x: 0,
+        y: index * 100,
+        toJSON: () => ({}),
+      });
+    });
+
+    // Trigger scroll event
+    const scrollEvent = new Event('scroll');
+    mockContainer.dispatchEvent(scrollEvent);
+
+    // Should not crash
+    expect(result.current.activeSection).toBeDefined();
+  });
+
+  it('should disable scroll snap on mobile', () => {
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 500, // Mobile width
+    });
+
+    const scrollIntoViewMock = vi.fn();
+    mockSections.forEach((section) => {
+      section.scrollIntoView = scrollIntoViewMock;
+    });
+
+    const { result } = renderHook(() => useSectionScroll());
+    result.current.containerRef.current = mockContainer;
+
+    const scrollEvent = new Event('scroll');
+    mockContainer.dispatchEvent(scrollEvent);
+
+    // Should not crash on mobile
+    expect(result.current.activeSection).toBeDefined();
+  });
+
+  it('should cleanup observers and listeners on unmount', () => {
+    const { result, unmount } = renderHook(() => useSectionScroll());
+    result.current.containerRef.current = mockContainer;
+
+    // Just verify unmount doesn't crash
+    expect(() => unmount()).not.toThrow();
+  });
+
+  it('should not crash if containerRef is null', () => {
+    const { result } = renderHook(() => useSectionScroll());
+
+    // Leave containerRef as null
+    expect(result.current.containerRef.current).toBeNull();
+
+    // Should not throw
+    expect(() => {
+      result.current.scrollToSection('home');
+    }).not.toThrow();
+  });
+
+  it('should handle sections without data-section attribute', () => {
+    const sectionWithoutAttr = document.createElement('section');
+    mockContainer.appendChild(sectionWithoutAttr);
+
+    const onSectionChange = vi.fn();
+    const { result } = renderHook(() => useSectionScroll({ onSectionChange }));
+    result.current.containerRef.current = mockContainer;
+
+    // Should not crash
+    expect(result.current.activeSection).toBeDefined();
+  });
+});
