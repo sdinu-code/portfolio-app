@@ -1,6 +1,6 @@
 import { contentData } from '@data/content';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Calendar, ChevronDown, ChevronUp, ExternalLink, Github, MapPin, Play } from 'lucide-react';
+import { Calendar, ChevronDown, ChevronUp, ExternalLink, FileText, Github, MapPin, Play } from 'lucide-react';
 import { memo, useState } from 'react';
 import styled from 'styled-components';
 
@@ -488,6 +488,18 @@ const Projects = memo(() => {
                     </ProjectMeta>
                   </ProjectTitleSection>
                   <ProjectActions>
+                    {project.publication && (
+                      <IconButton
+                        href={project.publication}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        aria-label={`View ${project.title} research publication`}
+                        title="Published Research Paper"
+                      >
+                        <FileText size={18} />
+                      </IconButton>
+                    )}
                     {project.website && (
                       <IconButton
                         href={project.website}
@@ -560,6 +572,17 @@ const Projects = memo(() => {
                     </ExpandedGrid>
 
                     <LinksSection>
+                      {project.publication && (
+                        <LinkButton
+                          href={project.publication}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <FileText size={16} />
+                          Research Paper
+                        </LinkButton>
+                      )}
                       {project.website && (
                         <LinkButton
                           href={project.website}

@@ -73,6 +73,7 @@ export interface Project {
   website?: string;
   repo: string;
   video: string;
+  publication?: string;
 }
 
 export interface Skill {

@@ -11,6 +11,11 @@ export const contentData: ContentData = {
   },
   certifications: [
     {
+      title: "Published Research: Neural Network Based System for Disease Prediction",
+      url: "https://www.researchgate.net/publication/357430190_Neural_Network_Based_System_for_Disease_Prediction",
+      date: "Dec 2021"
+    },
+    {
       title: "Microsoft Certified - Azure Fundamentals",
       url: "https://learn.microsoft.com/api/credentials/share/en-gb/SilviuDinu-1202/D2162FE9FCA167E1?sharingId=79B7C1ADC9510DE6",
       date: "18 Sep 2023"
@@ -38,8 +43,7 @@ export const contentData: ContentData = {
       position: "MASTER'S DEGREE IN ADVANCED SIGNAL PROCESSING IN MULTIMEDIA APPs",
       company: "Automatic Control and Computer Science, POLITEHNICA University",
       city: "Bucharest",
-      period: "2020 - 2022",
-      responsibilities: ["Machine learning research work: https://www.researchgate.net/publication/357430190_Neural_Network_Based_System_for_Disease_Prediction"]
+      period: "2020 - 2022"
     },
     {
       position: "BACHELOR'S DEGREE IN SYSTEMS ENGINEERING",
@@ -180,7 +184,8 @@ export const contentData: ContentData = {
       period: "Apr 2021 - May 2021",
       tools: ["Python", "PyTorch", "Machine Learning", "Flask", "REST APIs", "Data Science"],
       repo: "https://github.com/SilviuDinu/cercetare_sem2_BE",
-      video: "disease-predictor"
+      video: "disease-predictor",
+      publication: "https://www.researchgate.net/publication/357430190_Neural_Network_Based_System_for_Disease_Prediction"
     },
     {
       title: "Smoke Detector",

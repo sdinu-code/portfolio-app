@@ -30,6 +30,7 @@ describe('Certifications', () => {
     );
 
     // Check that certification titles are rendered
+    expect(screen.getByText(/Published Research: Neural Network Based System for Disease Prediction/i)).toBeDefined();
     expect(screen.getByText(/Microsoft Certified - Azure Fundamentals/i)).toBeDefined();
     expect(screen.getByText(/MongoDB - SI Associate Certification/i)).toBeDefined();
   });
@@ -41,6 +42,7 @@ describe('Certifications', () => {
       </ThemeProvider>
     );
 
+    expect(screen.getByText('Dec 2021')).toBeDefined();
     expect(screen.getByText('18 Sep 2023')).toBeDefined();
     expect(screen.getByText('16 Jun 2023')).toBeDefined();
   });
@@ -53,6 +55,6 @@ describe('Certifications', () => {
     );
 
     const links = screen.getAllByText('View Certificate');
-    expect(links).toHaveLength(2);
+    expect(links).toHaveLength(3);
   });
 });
