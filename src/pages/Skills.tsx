@@ -483,7 +483,7 @@ const Skills = memo(() => {
                 <CodewarsStatLabel>Completed Challenges</CodewarsStatLabel>
               </CodewarsStat>
             </CodewarsStats>
-            <div style={{ textAlign: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
               <CodewarsLink
                 href={`https://www.codewars.com/users/${codewars.username}`}
                 target="_blank"
