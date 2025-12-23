@@ -53,8 +53,8 @@ try {
       console.warn(`⚠ Git tag creation failed: ${tagError.message}`);
     }
 
-    // execSync('git push --follow-tags', { stdio: 'inherit' });
-    // console.log('✓ Changes and tags pushed to remote');
+    execSync('git push --follow-tags', { stdio: 'inherit' });
+    console.log('✓ Changes and tags pushed to remote');
   } catch (gitError) {
     console.warn('⚠ Git commit failed. You may need to commit manually.');
     console.warn('Error:', gitError.message);

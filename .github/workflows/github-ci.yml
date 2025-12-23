@@ -143,6 +143,4 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Increment version and commit
-        run: |
-          npm run postdeploy
-          git push
+        run: npm run postdeploy
